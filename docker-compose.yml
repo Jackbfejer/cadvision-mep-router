@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./mep_router:/app/mep_router
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=debug
+    command: poetry run uvicorn mep_router.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Add Redis for job queue (optional)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data: 

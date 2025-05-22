@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "cadvision-mep-router"
+version = "0.1.0"
+description = "Automated MEP routing system (CADVision) using Python"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "mep_router"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.109.0"
+uvicorn = "^0.27.0"
+ezdxf = "^1.1.0"
+shapely = "^2.0.2"
+networkx = "^3.2.1"
+opencv-python = "^4.9.0.80"
+pydantic = "^2.6.0"
+celery = "^5.3.6"
+python-multipart = "^0.0.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+black = "^24.1.0"
+isort = "^5.13.0"
+mypy = "^1.8.0"
+ruff = "^0.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+select = ["E", "F", "B", "I"]
+ignore = [] 
