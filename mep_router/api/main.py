@@ -13,6 +13,8 @@ from typing import Dict, List, Optional
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
+from fastapi.openapi.utils import get_openapi
+from fastapi.staticfiles import StaticFiles
 
 from mep_router.core.parser import DXFReader, LayerConfig
 from mep_router.core.space_model import SpaceModeler, SpaceModelConfig
@@ -35,6 +37,9 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 # Store job status
 job_status: Dict[str, Dict] = {}
+
+# Mount static directory for logo
+app.mount("/static", StaticFiles(directory="."), name="static")
 
 class RoutingRequest(BaseModel):
     """Schema for routing request configuration."""
@@ -262,4 +267,20 @@ async def delete_job(job_id: str) -> JSONResponse:
         })
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) 
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Custom OpenAPI schema with logo
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="CADVision MEP Router API",
+        version="0.1.0",
+        description="<img src='/static/logo.png' width='200'/><br>API for automated MEP routing in architectural drawings (CADVision)",
+        routes=app.routes,
+    )
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi 

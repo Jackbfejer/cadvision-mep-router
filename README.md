@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="CADVision Logo" width="300"/>
+</p>
+
 # CADVision MEP Router
 
 An automated Mechanical, Electrical, and Plumbing (MEP) routing system that leverages modern Python libraries to generate optimal routing paths in architectural drawings.
